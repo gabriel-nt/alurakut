@@ -6,7 +6,7 @@ import MainGrid from '../components/MainGrid';
 import ProfileRelationsBox from '../components/ProfileRelations';
 import OrkutNostalgicIconSet from '../components/OrkutNostalgicIconSet';
 import MenuProfileSidebar from '../components/MenuProfileSidebar';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
 interface CommunityProps {
   id: string;
@@ -14,17 +14,29 @@ interface CommunityProps {
   image: string;
 }
 
+interface FollowerProps {
+  id: string;
+  login: string;
+  avatar_url: string;
+}
+
 const Home = () => {
   const githubUser = 'gabriel-nt';
+  const [followers, setFollowers] = useState<FollowerProps[]>([]);
   const [communities, setCommunities] = useState<CommunityProps[]>([]);
-  const favoriteUsers = ['facebook', 'flutter', 'angular', 'nodejs'];
+  const favoriteUsers = [
+    'facebook',
+    'flutter',
+    'angular',
+    'nodejs',
+    'laravel',
+    'php',
+  ];
 
   const handleCreateCommunity = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.target as HTMLFormElement);
-
-    console.log(formData.get('title'));
 
     setCommunities([
       ...communities,
@@ -35,6 +47,16 @@ const Home = () => {
       },
     ]);
   };
+
+  useEffect(() => {
+    fetch(`https://api.github.com/users/${githubUser}/followers`)
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        setFollowers(response.splice(0, 6));
+      });
+  }, []);
 
   return (
     <>
@@ -121,6 +143,21 @@ const Home = () => {
                   <a href={`/users/${item.title}}`}>
                     <img src={`http://placehold.it/300x300`} alt="" />
                     <span>{item.title}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </ProfileRelationsBox>
+
+          <ProfileRelationsBox>
+            <h2 className="smallTitle">Seguidores ({followers.length})</h2>
+
+            <ul>
+              {followers.map(item => (
+                <li key={item.id}>
+                  <a href={`/users/${item.login}}`}>
+                    <img src={item.avatar_url} alt="" />
+                    <span>{item.login}</span>
                   </a>
                 </li>
               ))}
