@@ -11,7 +11,7 @@ import { FormEvent, useEffect, useState } from 'react';
 interface CommunityProps {
   id: string;
   title: string;
-  image: string;
+  imageUrl: string;
 }
 
 interface FollowerProps {
@@ -38,14 +38,20 @@ const Home = () => {
 
     const formData = new FormData(event.target as HTMLFormElement);
 
-    setCommunities([
-      ...communities,
-      {
-        id: new Date().toISOString(),
-        title: String(formData.get('title')),
-        image: String(formData.get('image')),
+    fetch('/api/communities', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    ]);
+      body: JSON.stringify({
+        title: String(formData.get('title')),
+        imageUrl: String(formData.get('image')),
+        creatorSlug: githubUser,
+      }),
+    }).then(async response => {
+      const data = await response.json();
+      setCommunities([data.data, ...communities]);
+    });
   };
 
   useEffect(() => {
@@ -55,6 +61,30 @@ const Home = () => {
       })
       .then(response => {
         setFollowers(response.splice(0, 6));
+      });
+
+    fetch(`https://graphql.datocms.com/`, {
+      method: 'POST',
+      headers: {
+        Authorization: '3ad544f54f76c94a2c8e56d1a3a195',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query {
+          allCommunities {
+            id
+            title
+            imageUrl
+          }
+        }`,
+      }),
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        setCommunities(response.data.allCommunities);
       });
   }, []);
 
@@ -85,7 +115,7 @@ const Home = () => {
           </Box>
 
           <Box>
-            <h2 className="subTitle">O que você deseja fazer</h2>
+            <h2 className="subTitle">O que você deseja fazer?</h2>
 
             <form onSubmit={handleCreateCommunity}>
               <div>
@@ -141,7 +171,7 @@ const Home = () => {
               {communities.map(item => (
                 <li key={item.id}>
                   <a href={`/users/${item.title}}`}>
-                    <img src={`http://placehold.it/300x300`} alt="" />
+                    <img src={item.imageUrl} alt="" />
                     <span>{item.title}</span>
                   </a>
                 </li>
