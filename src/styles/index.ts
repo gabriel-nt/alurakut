@@ -17,6 +17,13 @@ const AlurakutLoginScreen = css`
     --commonRadius: 8px;
   }
 
+  .login {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  }
+
   .loginScreen {
     padding: 16px;
     max-width: 1110px;

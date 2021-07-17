@@ -1,4 +1,7 @@
-import Image from 'next/image';
+import { GetServerSideProps } from 'next';
+import { FormEvent, useEffect, useState } from 'react';
+import nookies from 'nookies';
+import jwt from 'jsonwebtoken';
 
 import Box from '../components/Box';
 import Menu from '../components/Menu';
@@ -6,7 +9,6 @@ import MainGrid from '../components/MainGrid';
 import ProfileRelationsBox from '../components/ProfileRelations';
 import OrkutNostalgicIconSet from '../components/OrkutNostalgicIconSet';
 import MenuProfileSidebar from '../components/MenuProfileSidebar';
-import { FormEvent, useEffect, useState } from 'react';
 
 interface CommunityProps {
   id: string;
@@ -20,8 +22,11 @@ interface FollowerProps {
   avatar_url: string;
 }
 
-const Home = () => {
-  const githubUser = 'gabriel-nt';
+interface HomeProps {
+  githubUser: string;
+}
+
+const HomePage = ({ githubUser }: HomeProps) => {
   const [followers, setFollowers] = useState<FollowerProps[]>([]);
   const [communities, setCommunities] = useState<CommunityProps[]>([]);
   const favoriteUsers = [
@@ -199,4 +204,35 @@ const Home = () => {
   );
 };
 
-export default Home;
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const cookies = nookies.get(ctx);
+  const token = cookies.USER_TOKEN;
+
+  const { isAuthenticated } = await fetch(
+    'https://alurakut.vercel.app/api/auth',
+    {
+      headers: {
+        Authorization: token,
+      },
+    },
+  ).then(response => response.json());
+
+  if (!isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  const { githubUser } = jwt.decode(token) as HomeProps;
+
+  return {
+    props: {
+      githubUser,
+    },
+  };
+};
+
+export default HomePage;
