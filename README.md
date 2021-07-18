@@ -1,84 +1,93 @@
-# Example app with styled-components
+<h4 align="center">
+  <img src="https://github.com/gabriel-nt/alurakut/blob/main/public/logo-alurakut.svg" alt="logo" height="50"/>
+</h4>
 
-This example features how you use a different styling solution than [styled-jsx](https://github.com/vercel/styled-jsx) that also supports universal styles. That means we can serve the required styles for the first render within the HTML and then load the rest in the client. In this case we are using [styled-components](https://github.com/styled-components/styled-components).
+<h1 align="center">
+    🚀 Alurakut
+</h1>
 
-For this purpose we are extending the `<Document />` and injecting the server side rendered styles into the `<head>`, and also adding the `babel-plugin-styled-components` (which is required for server side rendering). Additionally we set up a global [theme](https://www.styled-components.com/docs/advanced#theming) for styled-components using NextJS custom [`<App>`](https://nextjs.org/docs/advanced-features/custom-app) component.
+<p align="center">Aplicação desenvolvida durante a Imersão React da Alura</p>
 
-## Preview
+<p align="center">
+  <img src="https://img.shields.io/badge/react%20version-17.0.2-informational"/>
+  <img src="https://img.shields.io/badge/next%20version-10.1.3-important" />
+  <img src="https://img.shields.io/badge/last%20commit-july-blue" />
+  <img src="https://img.shields.io/badge/license-MIT-success"/>
+</p>
 
-Preview the example live on [StackBlitz](http://stackblitz.com/):
+<p align="center">
+  <a href="#-features">Features</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-pré-requisitos">Pré-Requisitos</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-licença">Lincença</a>
+</p>
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-styled-components)
+<h3 align="center"> 
+🚧  Finalizado  🚧
+</h3>
 
-## Deploy your own
+### 📎 Features 
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+- [x] Cadastro de Comunidades
+- [x] Preview da Imagem da Comunidade
+- [x] Comunidades de séries
+- [x] Comunidades de filmes
+- [x] Integrantes das comunidades
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-styled-components&project-name=with-styled-components&repository-name=with-styled-components)
+### 💻 Projeto
 
-## How to use
+O Alurakut é uma aplicação baseada nos conceitos desenvolvidos pelo Orkut, rede social muito utilizado entre 2004 e 2014, ano da sua desativação. Portanto, o Alurakut, busca resgatar alguns principios, além de possibilitar a criação de comunidades de um determinado assunto. Esse Projeto foi desenvolvido durante a semana da Imersão React da Alura. 
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+### ✅ Demonstração
+<img src="https://github.com/gabriel-nt/alurakut/blob/main/public/thumbnail.png" alt="Thumbail"/>
+
+### ⚙ Pré-requisitos
+
+Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
+[Git](https://git-scm.com), [Node.js](https://nodejs.org/en/) e/ou [Yarn](https://yarnpkg.com/). 
+Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
+
+### 📗 Rodando a Aplicação (web)
 
 ```bash
-npx create-next-app --example with-styled-components with-styled-components-app
-# or
-yarn create next-app --example with-styled-components with-styled-components-app
+# Clone este repositório
+$ git clone https://github.com/gustavo-nt/alurakut
+
+# Instale as dependências
+$ yarn
+
+# Rode o servidor fake
+$ yarn server
+
+# Execute a aplicação
+$ yarn dev
+
+# Executar a aplicação de produção
+$ yarn start
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+### 🚀 Tecnologias
 
-### Try it on CodeSandbox
+Esse projeto foi desenvolvido com as seguintes tecnologias:
 
-[Open this example on CodeSandbox](https://codesandbox.io/s/github/vercel/next.js/tree/canary/examples/with-styled-components)
+- React
+- Typescript
+- Next
+- Node
 
-### Notes
+### 📕 Bibliotecas
 
-When wrapping a [Link](https://nextjs.org/docs/api-reference/next/link) from `next/link` within a styled-component, the [as](https://styled-components.com/docs/api#as-polymorphic-prop) prop provided by `styled` will collide with the Link's `as` prop and cause styled-components to throw an `Invalid tag` error. To avoid this, you can either use the recommended [forwardedAs](https://styled-components.com/docs/api#forwardedas-prop) prop from styled-components or use a different named prop to pass to a `styled` Link.
+Esse projeto foi utilizou das seguintes lib:
 
-<details>
-<summary>Click to expand workaround example</summary>
-<br />
+- react-dom
+- styled-components
+- datocms-client
+- react-icons
 
-**components/StyledLink.js**
+### 📝 Licença
 
-```javascript
-import Link from 'next/link'
-import styled from 'styled-components'
+Esse projeto está sob a licença MIT.
 
-const StyledLink = ({ as, children, className, href }) => (
-  <Link href={href} as={as} passHref>
-    <a className={className}>{children}</a>
-  </Link>
-)
+<hr/>
 
-export default styled(StyledLink)`
-  color: #0075e0;
-  text-decoration: none;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    color: #40a9ff;
-  }
-
-  &:focus {
-    color: #40a9ff;
-    outline: none;
-    border: 0;
-  }
-`
-```
-
-**pages/index.js**
-
-```javascript
-import StyledLink from '../components/StyledLink'
-
-export default () => (
-  <StyledLink href="/post/[pid]" forwardedAs="/post/abc">
-    First post
-  </StyledLink>
-)
-```
-
-</details>
+Feito por Gabriel Teixeira
