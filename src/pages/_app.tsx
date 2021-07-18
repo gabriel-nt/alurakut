@@ -1,18 +1,21 @@
 import { AppProps } from 'next/app';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
-import { AlurakutStyles } from '../styles';
-
 const GlobalStyle = createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
+
+  h1, h2, h3, h4, h5, h6, span {
+    color: #ffffff;
+  }
   
   body {
+    position: relative;
     font-family: sans-serif;
-    background-color: #D9E6F6;
+    background-color: rgb(20, 19, 50);
   }
 
   #__next {
@@ -26,13 +29,11 @@ const GlobalStyle = createGlobalStyle`
     height: auto;
     display: block;
   }
-
-  ${AlurakutStyles}
 `;
 
 const theme = {
   colors: {
-    primary: '#0070f3',
+    primary: 'rgb(20, 19, 50)',
   },
 };
 

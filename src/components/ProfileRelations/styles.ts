@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-
 import Box from '../Box';
 
-const ProfileRelationsBox = styled(Box)`
+export const ProfileRelationsBox = styled(Box)`
   ul {
     display: grid;
     grid-gap: 8px;
@@ -55,5 +54,3 @@ const ProfileRelationsBox = styled(Box)`
     }
   }
 `;
-
-export default ProfileRelationsBox;

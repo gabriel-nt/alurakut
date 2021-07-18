@@ -7,8 +7,8 @@ export default function MenuProfileSidebar({ githubUser }) {
       <div>
         <div style={{ borderRadius: 8 }}>
           <Image
-            height={300}
-            width={300}
+            height={200}
+            width={200}
             src={`https://github.com/${githubUser}.png`}
           />
         </div>

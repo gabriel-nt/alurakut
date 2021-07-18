@@ -11,7 +11,7 @@ export default function Menu({ githubUser }) {
   return (
     <Wrapper isMenuOpen={isMenuOpen}>
       <div className="container">
-        <Logo src={`${BASE_URL}/logo.svg`} />
+        <Logo src={`/marvel-logo.png`} />
 
         <nav style={{ flex: 1 }}>
           {[

@@ -1,11 +1,12 @@
 import { GetServerSideProps } from 'next';
 import { FormEvent, useEffect, useState } from 'react';
-import nookies from 'nookies';
 import jwt from 'jsonwebtoken';
+import nookies from 'nookies';
 
 import Box from '../components/Box';
 import Menu from '../components/Menu';
 import MainGrid from '../components/MainGrid';
+import Dropzone from '../components/Dropzone';
 import ProfileRelationsBox from '../components/ProfileRelations';
 import OrkutNostalgicIconSet from '../components/OrkutNostalgicIconSet';
 import MenuProfileSidebar from '../components/MenuProfileSidebar';
@@ -27,8 +28,11 @@ interface HomeProps {
 }
 
 const HomePage = ({ githubUser }: HomeProps) => {
-  const [followers, setFollowers] = useState<FollowerProps[]>([]);
-  const [communities, setCommunities] = useState<CommunityProps[]>([]);
+  const [selectedFile, setSelectedFile] = useState('');
+
+  const [characters, setCharacters] = useState<CommunityProps[]>([]);
+  const [movies, setMovies] = useState<CommunityProps[]>([]);
+  const [series, setSeries] = useState<CommunityProps[]>([]);
   const favoriteUsers = [
     'facebook',
     'flutter',
@@ -38,7 +42,7 @@ const HomePage = ({ githubUser }: HomeProps) => {
     'php',
   ];
 
-  const handleCreateCommunity = (event: FormEvent<HTMLFormElement>) => {
+  const handleCreateCommunity = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.target as HTMLFormElement);
@@ -55,19 +59,11 @@ const HomePage = ({ githubUser }: HomeProps) => {
       }),
     }).then(async response => {
       const data = await response.json();
-      setCommunities([data.data, ...communities]);
+      setMovies([data.data, ...movies]);
     });
   };
 
   useEffect(() => {
-    fetch(`https://api.github.com/users/${githubUser}/followers`)
-      .then(response => {
-        return response.json();
-      })
-      .then(response => {
-        setFollowers(response.splice(0, 6));
-      });
-
     fetch(`https://graphql.datocms.com/`, {
       method: 'POST',
       headers: {
@@ -77,7 +73,7 @@ const HomePage = ({ githubUser }: HomeProps) => {
       },
       body: JSON.stringify({
         query: `query {
-          allCommunities {
+          allSeries {
             id
             title
             imageUrl
@@ -89,7 +85,55 @@ const HomePage = ({ githubUser }: HomeProps) => {
         return response.json();
       })
       .then(response => {
-        setCommunities(response.data.allCommunities);
+        setSeries(response.data.allSeries);
+      });
+
+    fetch(`https://graphql.datocms.com/`, {
+      method: 'POST',
+      headers: {
+        Authorization: '3ad544f54f76c94a2c8e56d1a3a195',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query {
+          allMovies {
+            id
+            title
+            imageUrl
+          }
+        }`,
+      }),
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        setMovies(response.data.allMovies);
+      });
+
+    fetch(`https://graphql.datocms.com/`, {
+      method: 'POST',
+      headers: {
+        Authorization: '3ad544f54f76c94a2c8e56d1a3a195',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query {
+          allCharacters {
+            id
+            title
+            imageUrl
+          }
+        }`,
+      }),
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        setCharacters(response.data.allCharacters);
       });
   }, []);
 
@@ -136,10 +180,19 @@ const HomePage = ({ githubUser }: HomeProps) => {
                 <input
                   type="text"
                   name="image"
+                  value={selectedFile}
+                  onChange={e => setSelectedFile(e.target.value)}
                   aria-label="Coloque uma url para usar de capa"
                   placeholder="Coloque uma url para usar de capa"
                 />
               </div>
+
+              <Dropzone
+                imageUrl={selectedFile}
+                onRemove={() => {
+                  setSelectedFile('');
+                }}
+              />
 
               <button>Criar comunidade</button>
             </form>
@@ -152,52 +205,9 @@ const HomePage = ({ githubUser }: HomeProps) => {
             gridArea: 'profileRelationsArea',
           }}
         >
-          <ProfileRelationsBox>
-            <h2 className="smallTitle">
-              Pessoas da comunidade ({favoriteUsers.length})
-            </h2>
-
-            <ul>
-              {favoriteUsers.map(item => (
-                <li key={item}>
-                  <a href={`/users/${item}`}>
-                    <img src={`https://github.com/${item}.png`} alt="Profile" />
-                    <span>{item}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </ProfileRelationsBox>
-
-          <ProfileRelationsBox>
-            <h2 className="smallTitle">Comunidades ({communities.length})</h2>
-
-            <ul>
-              {communities.map(item => (
-                <li key={item.id}>
-                  <a href={`/users/${item.title}}`}>
-                    <img src={item.imageUrl} alt="" />
-                    <span>{item.title}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </ProfileRelationsBox>
-
-          <ProfileRelationsBox>
-            <h2 className="smallTitle">Seguidores ({followers.length})</h2>
-
-            <ul>
-              {followers.map(item => (
-                <li key={item.id}>
-                  <a href={`/users/${item.login}}`}>
-                    <img src={item.avatar_url} alt="" />
-                    <span>{item.login}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </ProfileRelationsBox>
+          <ProfileRelationsBox title="Filmes" data={movies} />
+          <ProfileRelationsBox title="Séries" data={series} />
+          <ProfileRelationsBox title="Integrantes" data={characters} />
         </div>
       </MainGrid>
     </>

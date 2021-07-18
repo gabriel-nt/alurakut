@@ -2,13 +2,13 @@ import styled from 'styled-components';
 
 const Box = styled.div`
   padding: 16px;
-  border-radius: 8px;
+  border-radius: 10px;
   margin-bottom: 10px;
-  background: #ffffff;
+  background: rgb(27, 26, 66);
 
   .boxLink {
     font-size: 14px;
-    color: #2e7bb4;
+    color: #ffffff;
     text-decoration: none;
     font-weight: 800;
   }
@@ -29,7 +29,7 @@ const Box = styled.div`
     margin-bottom: 20px;
     font-size: 16px;
     font-weight: 700;
-    color: #333333;
+    color: #ffffff;
     margin-bottom: 20px;
   }
 
@@ -42,21 +42,21 @@ const Box = styled.div`
 
   input {
     width: 100%;
-    background-color: #f4f4f4;
-    color: #333333;
+    background-color: rgb(20, 19, 50);
+    color: #ffffff;
     border: 0;
     padding: 14px 16px;
     margin-bottom: 14px;
-    border-radius: 10000px;
+    border-radius: 10px;
 
     ::placeholder {
-      color: #333333;
+      color: #ffffff;
       opacity: 1;
     }
   }
 
   img {
-    border-radius: 8px;
+    border-radius: 10px;
   }
 
   button {
@@ -64,7 +64,7 @@ const Box = styled.div`
     padding: 8px 12px;
     color: #ffffff;
     border-radius: 10000px;
-    background-color: #6f92bb;
+    background-color: #a70036;
   }
 `;
 
