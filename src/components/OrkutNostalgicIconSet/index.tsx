@@ -4,12 +4,12 @@ export default function OrkutNostalgicIconSet(props) {
   return (
     <Container>
       {[
-        { name: 'Recados', slug: 'recados', icon: 'book' },
-        { name: 'Fotos', slug: 'fotos', icon: 'camera' },
-        { name: 'Videos', slug: 'videos', icon: 'video-camera' },
-        { name: 'Fãs', slug: 'fas', icon: 'star' },
-        { name: 'Mensagens', slug: 'mensagens', icon: 'email' },
-      ].map(({ name, slug, icon }) => (
+        { name: 'Recados', slug: 'recados', icon: 'book', count: 552 },
+        { name: 'Fotos', slug: 'fotos', icon: 'camera', count: 76 },
+        { name: 'Videos', slug: 'videos', icon: 'video-camera', count: 98 },
+        { name: 'Fãs', slug: 'fas', icon: 'star', count: 467 },
+        { name: 'Mensagens', slug: 'mensagens', icon: 'email', count: 100 },
+      ].map(({ name, slug, icon, count }) => (
         <li key={`orkut__icon_set__${slug}`}>
           <span
             style={{ gridArea: 'title' }}
@@ -26,7 +26,7 @@ export default function OrkutNostalgicIconSet(props) {
               className="OrkutNostalgicIconSet__iconSample"
               src={`https://alurakut.vercel.app/icons/${icon}.svg`}
             />
-            {props[slug] ? props[slug] : 0}
+            {count}
           </span>
         </li>
       ))}
