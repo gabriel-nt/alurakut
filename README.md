@@ -28,6 +28,7 @@
 
 ### 📎 Features 
 
+- [x] Login e Logout
 - [x] Cadastro de Comunidades
 - [x] Preview da Imagem da Comunidade
 - [x] Comunidades de séries
